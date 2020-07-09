@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "HTTP://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+	<typeAliases>
+		<typeAlias type="test.data.TestDto" alias="tdto"/>
+		<typeAlias type="member.data.MemberDto" alias="memberdto"/>
+		<typeAlias type="books.data.BooksDto" alias="booksdto"/>
+		<typeAlias type="classdata.data.ClassDataDto" alias="classdatadto"/>
+		<typeAlias type="classdatafiles.data.ClassDataFilesDto" alias="classdatafilesdto"/>
+		<typeAlias type="files.data.FilesDto" alias="filesdto"/>
+		<typeAlias type="memo.data.MemoDto" alias="memodto"/>
+		<typeAlias type="notice.data.NoticeDto" alias="noticedto"/>
+		<typeAlias type="plans.data.PlansDto" alias="plansdto"/>
+		<typeAlias type="process.data.ProcessDto" alias="processdto"/>
+		<typeAlias type="processapply.data.ProcessApplyDto" alias="processapplydto"/>
+		<typeAlias type="processclass.data.ProcessClassDto" alias="processclassdto"/>
+		<typeAlias type="reply.data.ReplyDto" alias="replydto"/>
+		<typeAlias type="study.data.StudyDto" alias="studydto"/>
+		<typeAlias type="study.data.StudySearchDto" alias="studysearchdto"/>
+		<typeAlias type="studyapply.data.StudyApplyDto" alias="studyapplydto"/>
+		<typeAlias type="studyfeed.data.StudyFeedDto" alias="studyfeeddto"/>
+		<typeAlias type="studygroup.data.StudyGroupDto" alias="studygroupdto"/>
+		<typeAlias type="process.data.ProcessListDto" alias="processlistdto" />
+		<typeAlias type="files.data.ProcessFilesDto" alias="processfilesdto" />
+		<typeAlias type="review.data.ReviewDto" alias="reviewdto"/>
+		<typeAlias type="qna.data.QnaDto" alias="qnadto" />
+		<typeAlias type="process.data.ProcessMainListDto" alias="promaindto" />
+	</typeAliases>
+	<mappers>
+		<mapper resource="mybatis/setting/TestSql.xml"/>
+		 <mapper resource="mybatis/setting/MemberSql.xml"/>
+		<mapper resource="mybatis/setting/BooksSql.xml"/>
+		<mapper resource="mybatis/setting/ClassDataSql.xml"/>
+		<mapper resource="mybatis/setting/ClassDataFilesSql.xml"/>
+		<mapper resource="mybatis/setting/FilesSql.xml"/>
+		<mapper resource="mybatis/setting/MemoSql.xml"/>
+		<mapper resource="mybatis/setting/NoticeSql.xml"/>
+		<mapper resource="mybatis/setting/PlansSql.xml"/>
+		<mapper resource="mybatis/setting/ProcessSql.xml"/>
+		<mapper resource="mybatis/setting/ProcessApplySql.xml"/>
+		<mapper resource="mybatis/setting/ProcessClassSql.xml"/>
+		<mapper resource="mybatis/setting/ReplySql.xml"/>
+		<mapper resource="mybatis/setting/StudySql.xml"/>
+		<mapper resource="mybatis/setting/StudyApplySql.xml"/><!--  -->
+		<mapper resource="mybatis/setting/StudyFeedSql.xml"/>
+		<mapper resource="mybatis/setting/StudyGroupSql.xml"/> 	
+		<mapper resource="mybatis/setting/ReviewSql.xml"/>	
+		<mapper resource="mybatis/setting/StudyGroupSql.xml"/> 
+		<mapper resource="mybatis/setting/QnaSql.xml"/>		
+		 
+	</mappers>
+</configuration>

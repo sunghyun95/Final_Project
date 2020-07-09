@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="processapply">
+	<insert id="insertProcessApply" parameterType="processapplydto">
+		insert into processapply (processapply_member_num,processapply_process_num,processapply_writeday,processapply_applyreason) 
+		values (#{processapply_member_num},#{processapply_process_num},now(),#{processapply_applyreason})
+	</insert>
+	<select id="listProcessApply" parameterType="int" resultType="processapplydto">
+select a.processapply_num,a.processapply_member_num,a.processapply_process_num,a.processapply_writeday,a.processapply_applyreason,
+b.process_subject processapply_process_subject,c.member_name processapply_member_name,c.member_phone processapply_member_phone,c.member_email processapply_member_email
+,c.member_address processapply_member_address,c.member_detailaddr processapply_member_detailaddr,c.member_type processapply_member_type
+from processapply a, process b,member c
+where a.processapply_process_num = b.process_num
+and a.processapply_member_num = c.member_num
+and b.process_member_num = #{member_num}
+	</select>
+	<select id="selectProcessApply" parameterType="int" resultType="processapplydto">
+		select * from processapply where processapply_member_num = #{member_num}
+	</select>
+	<update id="upldateProcessApplyAccept" parameterType="processapplydto">
+		update processapply set processapply_consulting = #{processapply_consulting},processapply_acceptreason=#{processapply_acceptreason} where processapply_num = #{processapply_num}
+	</update>
+</mapper>

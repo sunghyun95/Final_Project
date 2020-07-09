@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="memo">
+	<select id="getMemoList" parameterType="int" resultType="memodto">
+		select * from memo where memo_process_num = #{memo_process_num} order by memo_writeday desc
+	</select>
+	<insert id="insertMemo" parameterType="memodto">
+		insert into memo (memo_member_num,memo_content,memo_writeday,memo_subject,memo_process_num,memo_filename) values (#{memo_member_num},#{memo_content},now(),#{memo_subject},#{memo_process_num},#{memo_filename})
+	</insert>
+	<select id="getProcessList" parameterType="int" resultType="processdto">
+		SELECT * FROM process  WHERE process_member_num = #{member_num}
+	</select>
+	<select id="getMemoMaxnum" resultType="int">
+		select max(memo_num) from memo
+	</select>
+	<delete id="deleteMemo" parameterType="int">
+		delete from memo where memo_num = #{memo_num}
+	</delete>
+	<update id="updateMemo" parameterType="memodto">
+		update memo set memo_subject=#{memo_subject},memo_content=#{memo_content},memo_filename=#{memo_filename} where memo_num = #{memo_num}
+	</update>
+	<select id="selectOneMemo" parameterType="int" resultType="memodto">
+		select * from memo where memo_num = #{memo_num}
+	</select>
+</mapper>

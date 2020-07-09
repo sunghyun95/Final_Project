@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="reply">
+	<insert id="insertOfReply" parameterType="replydto">
+		INSERT INTO reply(reply_member_num,reply_studyfeed_num,reply_content,reply_writeday)
+		VALUES (#{reply_member_num},#{reply_studyfeed_num},#{reply_content},now())
+	</insert>
+	<select id="selectOfReply" resultType="replydto">
+		SELECT a.member_name, a.member_profile, c.* 
+		FROM member as a, studyfeed as b, reply as c
+		WHERE c.reply_num IS NOT NULL 
+        AND b.studyfeed_num = c.reply_studyfeed_num
+        AND a.member_num = c.reply_member_num
+		ORDER BY c.reply_writeday asc;
+	</select>
+	<delete id="deleteOfReply" parameterType="int">
+		DELETE FROM reply WHERE reply_num = #{reply_num}
+	</delete>
+</mapper>

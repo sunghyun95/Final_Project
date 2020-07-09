@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="studyfeed">
+	<!-- 파일 추가 -->
+	<insert id="insertOfStudyFeedfiles" parameterType="HashMap">
+		INSERT INTO studyfeedfiles(studyfeedfiles_studyfeed_num, studyfeedfiles_studyfeed_filename) 
+		VALUES (#{studyfeedfiles_studyfeed_num}, #{studyfeedfiles_studyfeed_filename})
+	</insert>
+	<delete id="deleteOfStudyFeedfile" parameterType="String">
+		DELETE FROM studyfeedfiles 
+		WHERE studyfeedfiles_studyfeed_filename = #{studyfeedfiles_studyfeed_filename}
+	</delete>
+	<!-- 선택 조회 -->
+	<select id="selectOneOfStudyFeedfiles" parameterType="int" resultType="String">
+		SELECT studyfeedfiles_studyfeed_filename FROM studyfeedfiles 
+		WHERE studyfeedfiles_studyfeed_num = #{studyfeedfiles_studyfeed_num}
+	</select>
+	<!-- maxNum -->
+	<select id="maxNumOfStudyFeed" resultType="int">
+		SELECT max(studyfeed_num) FROM studyfeed
+	</select>
+	
+	<insert id="insertOfStudyFeed" parameterType="studyfeeddto">
+		INSERT INTO studyfeed(studyfeed_studygroup_num, studyfeed_member_num, 
+		studyfeed_content, studyfeed_writeday) 
+		VALUES (#{studyfeed_studygroup_num}, #{studyfeed_member_num}, #{studyfeed_content}, now())
+	</insert>
+	<select id="selectOfStudyFeedList" parameterType="HashMap" resultType="studyfeeddto">
+		SELECT a.member_name, a.member_profile, b.*
+		FROM member as a LEFT JOIN studyfeed as b 
+		ON a.member_num = b.studyfeed_member_num 
+        WHERE b.studyfeed_num IS NOT NULL 
+        AND b.studyfeed_studygroup_num = #{studyfeed_studygroup_num} 
+		ORDER BY b.studyfeed_num DESC
+        LIMIT 3 OFFSET #{offset}
+	</select>
+	<update id="updateOfStudyFeed" parameterType="studyfeeddto">
+		UPDATE studyfeed SET studyfeed_content = #{studyfeed_content} 
+		WHERE studyfeed_num = #{studyfeed_num}
+	</update>
+	<delete id="deleteOfStudyFeed" parameterType="int">
+		DELETE FROM studyfeed WHERE studyfeed_num = #{studyfeed_num}
+	</delete>
+</mapper>

@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="study">
+	<insert id="insertOfStudy" parameterType="studydto">
+		INSERT INTO study(study_type,study_subject,study_member_num,
+		study_startdate,study_enddate,study_gatherday,study_peoples,
+		study_level,study_intr,study_goal,study_progress,study_address,
+		study_detailaddr,study_mainimage,study_writeday,study_writer) 
+		VALUES (#{study_type},#{study_subject},#{study_member_num},
+		#{study_startdate},#{study_enddate},#{study_gatherday},
+		#{study_peoples},#{study_level},#{study_intr},#{study_goal},
+		#{study_progress},#{study_address},#{study_detailaddr},
+		#{study_mainimage},now(),#{study_writer})
+	</insert>
+	<select id="selectOfStudyList" parameterType="studysearchdto" resultType="studydto">
+		<![CDATA[
+		SELECT * FROM study where 1=1 and study_enddate>=now() 
+		]]>
+		<if test="searchSubject!=null and searchSubject!=''">
+			and ${textfield} like concat('%',#{searchSubject},'%')
+		</if>
+		<if test ="searchLevel!=null and searchLevel!=''">
+			and study_level = #{searchLevel}
+		</if>
+		<if test="searchType!=null and searchType!=''">
+			and study_type = #{searchType}
+		</if>
+		 <if test="searchStartdate!=null and searchStartdate!=''">
+		 <![CDATA[
+			and study_startdate>=#{searchStartdate}
+			]]>
+		</if>
+		
+		<!-- <if test="searchEnddate!=null and searchEnddate!=''">
+			and study_enddate=#{searchEnddate}
+		 </if>--> 
+		 <if test="searchGatherday!=null and searchGatherday!=''">
+		 <foreach collection="searchGatherday" item="item">
+			and study_gatherday like concat ('%',#{item},'%')
+		 </foreach>
+		</if>
+		<if test="searchAddress!=null and searchAddress!=''">
+			and study_address like concat('%',#{searchAddress},'%')
+		</if>
+		<!-- <if test="searchDetailAddr!=null and searchDetailAddr!=''">
+			and study_detailaddr like concat('%',#{searchDetailAddr},'%')
+		</if> -->
+	</select>
+	<select id="selectNumOfNewestStudy" resultType="int">
+		SELECT MAX(study_num) FROM study
+	</select>
+	<select id="selectOfStudyByNum" parameterType="int" resultType="studydto">
+		SELECT * FROM study WHERE study_num = #{study_num}
+	</select>
+	<select id="selectOfStudyFounder" parameterType="int" resultType="studydto">
+		SELECT * FROM study WHERE study_member_num = #{study_member_num}
+	</select>
+	<delete id="deleteOfStudy" parameterType="int">
+		DELETE FROM study
+		WHERE study_num = #{study_num}
+	</delete>
+	<update id="updateOfStudy" parameterType="studydto">
+		UPDATE study SET study_type = #{study_type}, study_subject = #{study_subject}, 
+		study_startdate = #{study_startdate}, study_enddate = #{study_enddate}, 
+		study_gatherday = #{study_gatherday}, study_peoples = #{study_peoples}, 
+		study_level = #{study_level}, study_intr = #{study_intr}, study_goal = #{study_goal}, 
+		study_progress = #{study_progress}, study_address = #{study_address}, 
+		study_detailaddr = #{study_detailaddr}, study_mainimage = #{study_mainimage} 
+		WHERE study_num = #{study_num}
+	</update>
+	<update id="updateOfStudyReadCount" parameterType="int">
+		UPDATE study SET study_readcount = study_readcount + 1 
+		WHERE study_num = #{study_num}
+	</update>
+</mapper>

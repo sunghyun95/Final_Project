@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="studygroup">
+	<insert id="insertOfStudyGroup" parameterType="HashMap">
+		INSERT INTO studygroup(studygroup_study_num,studygroup_member_num) 
+		VALUES (#{studygroup_study_num},#{studygroup_member_num})
+	</insert>
+	<insert id="insertOfStudyGroupByDto" parameterType="studygroupdto">
+		INSERT INTO studygroup(studygroup_study_num,studygroup_member_num) 
+		VALUES (#{studygroup_study_num},#{studygroup_member_num})
+	</insert>
+	<select id="selectCountOfStudyGroupPeoples" parameterType="int" resultType="int">
+		SELECT COUNT(*) as count 
+		FROM studygroup 
+		WHERE studygroup_study_num = #{studygroup_study_num}
+	</select>
+	<select id="selectOfStudyGroupParticipationState" parameterType="HashMap" resultType="int">
+		SELECT COUNT(IF(studygroup_study_num=#{studygroup_study_num} 
+		AND studygroup_member_num=#{studygroup_member_num},
+		studygroup_study_num AND studygroup_member_num,null)) as count FROM studygroup
+	</select>
+	<select id="selectOfStudyGroupParticipation" parameterType="int" resultType="studydto">
+		SELECT study.study_num,study.study_subject,study.study_writer 
+		FROM study,studygroup 
+		WHERE study.study_num = studygroup.studygroup_study_num 
+		AND studygroup.studygroup_member_num = #{studygroup.studygroup_member_num}
+	</select>
+	<select id="selectOfZeroCheckByStudyGroup" parameterType="int" resultType="int">
+		SELECT count(*) AS count 
+		FROM study,studygroup 
+		WHERE studygroup.studygroup_study_num = study.study_num 
+		AND study.study_num = #{study.study_num}
+	</select>
+	<delete id="deleteOfStudyGroup" parameterType="studygroupdto">
+		DELETE FROM studygroup 
+		WHERE studygroup_study_num = #{studygroup_study_num} 
+		AND studygroup_member_num = #{studygroup_member_num}
+	</delete>
+	<select id="selectOfStudyMember" parameterType="int" resultType="memberdto">
+		SELECT a.member_name, a.member_profile
+		FROM member as a, studygroup as b
+		WHERE a.member_num = b.studygroup_member_num 
+		AND b.studygroup_study_num = #{studygroup_study_num}
+	</select>
+</mapper>

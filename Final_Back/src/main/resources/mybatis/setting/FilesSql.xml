@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="files">
+<!-- 공지사항 부분 -->
+	<!-- 파일 추가 -->
+	<insert id="insertOfNoticefiles" parameterType="HashMap">
+		insert into noticefiles(noticefiles_notice_num, noticefiles_notice_filename) values (#{noticefiles_notice_num}, #{noticefiles_notice_filename})
+	</insert>
+	<!-- 파일 수정 -->
+	<update id="updateOfNoticefiles" parameterType="int">
+		update noticefiles set noticefiles_notice_filename=#{noticefiles_notice_filename} where noticefiles_num=#{noticefiles_num}
+	</update>
+	<!-- 파일 삭제 -->
+	<delete id="deleteOfNoticefiles" parameterType="int">
+		delete from noticefiles where noticefiles_num=#{noticefiles_num}
+	</delete>
+	<delete id="deleteOfNoticefile" parameterType="String">
+		delete from noticefiles where noticefiles_notice_filename=#{noticefiles_notice_filename}
+	</delete>
+	<!-- 선택 조회 -->
+	<select id="selectOneofNoticefiles" parameterType="int" resultType="String">
+		select noticefiles_notice_filename from noticefiles where noticefiles_notice_num=#{noticefiles_notice_num}
+	</select>
+</mapper>

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="qna">
+	<!-- 전체 리스트 조회 -->
+	<select id="selecoOfQna" resultType="qnadto">
+		select * from qna order by qna_regroup desc, qna_restep asc
+	</select>
+	<!-- totalCount -->
+	<select id="totalCountOfQna" resultType="int">
+		select count(*) from qna
+	</select>
+	<!-- maxnum -->
+	<select id="selectOfMaxnum" resultType="int">
+		select ifnull(max(qna_num),0) from qna
+	</select>
+	<!-- 같은 그룹 중 restep보다 큰 값은 모두 +1 -->
+	<update id="updateRestepOfBoard" parameterType="HashMap">
+		<![CDATA[
+		update qna set qna_restep=qna_restep+1, where qna_regroup=#{qna_regroup} and qna_restep>#{qna_restep}
+		]]>
+	</update>
+	<!-- insert -->
+	<insert id="insertOfQna" parameterType="qnadto">
+		insert into qna(qna_member_num,qna_member_name, qna_subject, qna_content, qna_writeday, qna_regroup, qna_restep, qna_relevel)
+		values (#{qna_member_num},#{qna_member_name},#{qna_subject},#{qna_content},now(),#{qna_regroup},#{qna_restep},#{qna_relevel})
+	</insert>
+	<!-- readcount -->
+	<update id="readCountOfQna" parameterType="int">
+		update qna set qna_readcount=qna_readcount+1 where qna_num=#{qna_num}
+	</update>
+	<!-- 선택 조회 -->
+	<select id="selectOneOfQna" parameterType="int" resultType="qnadto">
+		select * from qna where qna_num=#{qna_num}
+	</select>
+	<!-- 글수정 -->
+	<update id="updateOfQna" parameterType="qnadto">
+		update qna set qna_subject=#{qna_subject}, qna_content=#{qna_content} where qna_num=#{qna_num}
+	</update>
+	<!-- 글 삭제 -->
+	<delete id="deleteOfQna" parameterType="int">
+		delete from qna where qna_num=#{qna_num}
+	</delete>
+	<!-- 공지사항 검색 -->
+	<select id="allOfQna" parameterType="HashMap" resultType="qnadto">
+		select * from qna where 1=1 
+		<!-- <if test="type!=null and type!=''">
+			and notice_subject = #{notice_subject}
+		</if> -->
+		<if test="search!=null and search!=''">
+			and ${field} like concat('%',#{search},'%')
+		</if>
+		order by qna_regroup desc, qna_restep asc
+		</select>
+</mapper>

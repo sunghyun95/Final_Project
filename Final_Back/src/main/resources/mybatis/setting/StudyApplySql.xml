@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="studyapply">
+	<insert id="insertOfStudyApply" parameterType="studyapplydto">
+		INSERT INTO studyapply(studyapply_member_num,studyapply_study_num,
+		studyapply_mylevel,studyapply_comment,studyapply_writeday) 
+		VALUES (#{studyapply_member_num},#{studyapply_study_num},
+		#{studyapply_mylevel},#{studyapply_comment},now())
+	</insert>
+	<select id="selectOfStudyApplyState" parameterType="HashMap" resultType="int">
+		SELECT COUNT(IF(studyapply_member_num=#{studyapply_member_num} 
+		AND studyapply_study_num=#{studyapply_study_num},
+		studyapply_member_num AND studyapply_study_num,null)) as count FROM studyapply
+	</select>
+	<select id="selectOfMyStudyApply" parameterType="int" resultType="studydto">
+		SELECT study.study_num,study.study_subject,study.study_writer 
+		FROM study,studyapply 
+		WHERE study.study_num = studyapply.studyapply_study_num 
+		AND studyapply.studyapply_member_num = #{studyapply.studyapply_member_num}
+	</select>
+	<select id="selectOfApplyMember" parameterType="int" resultType="studyapplydto">
+		SELECT member.member_name,member.member_phone,studyapply.*
+		FROM member LEFT JOIN studyapply 
+		ON member.member_num = studyapply.studyapply_member_num 
+		WHERE studyapply.studyapply_study_num = #{studyapply.studyapply_study_num};
+	</select>
+	<delete id="deleteOfStudyApply" parameterType="studyapplydto">
+		DELETE FROM studyapply 
+		WHERE studyapply_member_num = #{studyapply_member_num} 
+		AND studyapply_study_num = #{studyapply_study_num}
+	</delete>
+	<delete id="deleteOfStudyApplyByGroup" parameterType="studygroupdto">
+		DELETE FROM studyapply 
+		WHERE studyapply_member_num = #{studygroup_member_num} 
+		AND studyapply_study_num = #{studygroup_study_num}
+	</delete>
+</mapper>

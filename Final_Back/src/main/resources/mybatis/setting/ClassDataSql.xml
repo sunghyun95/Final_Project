@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="classdata">
+	<insert id="insertOfClassData" parameterType="classdatadto">
+		insert into classdata(classdata_processclass_num,classdata_member_num,classdata_subject,
+		classdata_content,classdata_writeday,classdata_writer)
+		values (#{classdata_processclass_num},#{classdata_member_num},#{classdata_subject},
+		#{classdata_content},now(),#{classdata_writer})
+	</insert>
+	
+	<select id="selectClassDataMaxnum" resultType="int">
+		select max(classdata_num) from classdata
+	</select>
+	
+	<select id="selectOneOfClassData" parameterType="int" resultType="classdatadto">
+		select * from classdata where classdata_num=#{classdata_num}
+	</select>
+	
+	<select id="selectOfClassData" parameterType="int" resultType="classdatadto">
+		select * from classdata where classdata_processclass_num = #{process_num} order by classdata_num desc
+	</select>
+	
+	<update id="updateOfClassData" parameterType="classdatadto">
+		update classdata set classdata_subject=#{classdata_subject},
+		classdata_content=#{classdata_content} where classdata_num=#{classdata_num}
+	</update>
+	
+	<delete id="deleteOfClassData" parameterType="int">
+		delete from classdata where classdata_num=#{classdata_num}
+	</delete>
+</mapper>

@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="process">
+	<insert id="insertProcess" parameterType="processdto">
+		insert into process(process_type,process_member_num,process_subject,process_intr,process_peoples,process_startdate,process_enddate,process_teacher,process_writeday,process_teachername,process_writer) values (#{process_type},#{process_member_num},#{process_subject},#{process_intr},#{process_peoples},#{process_startdate},#{process_enddate},#{process_teacher},now(),#{process_teachername},#{process_writer})
+	</insert>
+	<select id="selectProcessMaxnum" resultType="int">
+		select max(process_num) from process
+	</select>
+		<select id="getAllProcess" parameterType="HashMap" resultType="processlistdto">
+		select process_num,process_type,process_member_num,process_subject,process_intr,process_peoples,process_startdate,process_enddate,process_status,process_teacher,process_writeday,process_teachername,process_writer from process 
+		where 1=1
+		order by process_num desc
+		limit #{start},#{end}
+	</select>
+	<select id="getAllMainProcess" parameterType="HashMap" resultType="promaindto">
+		SELECT a.*,b.member_profile
+		FROM process a, member b
+		WHERE a.process_teacher = b.member_num
+		<if test="process_type!=null and process_type!=''">
+		and process_type = #{process_type}
+		</if>
+		order by process_num desc
+		limit #{start},#{end}
+	</select>
+	<select id="selectOneProcess" parameterType="int" resultType="processdto">
+		select * from process where process_num = #{process_num}	
+	</select>
+	<select id="selectOneTeacher" parameterType="String" resultType="memberdto">
+		select * from member where member_num = #{teachernum}
+	</select>
+	<select id="searchTeacher" resultType="memberdto">
+		select * from member where member_type = "강사"
+	</select>
+	<insert id="insertProcessFiles" parameterType="processfilesdto">
+		insert into processfiles (processfiles_process_num, processfiles_process_filename) values (#{processfiles_process_num},#{processfiles_process_filename})
+	</insert>
+	<select id="processFilesList" parameterType="int" resultType="processfilesdto">
+		select * from processfiles where processfiles_process_num = #{processfiles_process_num}
+	</select>
+	<delete id="deleteProcess" parameterType="int">
+		delete from process where process_num = #{process_num}
+	</delete>
+	<delete id="deleteProcessFiles" parameterType="int">
+		delete from processfiles where processfiles_process_num=#{process_num}
+	</delete>
+	<update id="updateProcess" parameterType="processdto">
+		update process set process_type=#{process_type},process_subject=#{process_subject},process_intr=#{process_intr},process_peoples=#{process_peoples},process_startdate=#{process_startdate},process_enddate=#{process_enddate},process_teacher=#{process_teacher},process_teachername=#{process_teachername} where process_num = #{process_num}
+	</update>
+	<select id="getProcessImage" parameterType="int" resultType="processfilesdto">
+		select * from processfiles where processfiles_num = #{processfiles_num}
+	</select>
+	<delete id="deleteImage" parameterType="int">
+		delete from processfiles where processfiles_num = #{processfiles_num}
+	</delete>
+	<select id="managerlist" parameterType="int" resultType="processdto">
+		select * from process where 1=1 and process_member_num = #{member_num}
+	</select>
+</mapper>

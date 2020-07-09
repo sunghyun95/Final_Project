@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="processclass">
+	<insert id="insertProcessClass" parameterType="processclassdto">
+		insert into processclass (processclass_process_num,processclass_member_num,processclass_member_type) values (#{processclass_process_num},#{processclass_member_num},#{processclass_member_type})
+	</insert>
+	<update id="updateTeacherNum" parameterType="processclassdto">
+		update processclass set processclass_member_num = #{processclass_member_num} where processclass_process_num = #{processclass_process_num}
+	</update>
+	<update id="updateMemberType" parameterType="HashMap">
+		update member set member_type = #{process_subject} where member_num = #{member_num}
+	</update>
+	<select id="checkProcessClass" parameterType="HashMap" resultType="int">
+		select count(*) from processclass where processclass_process_num = #{process_num} and processclass_member_num = #{member_num}
+	</select>
+	<select id="getClassPage" parameterType="String" resultType="processdto">
+		SELECT a.*
+	FROM process a,processclass b
+	WHERE a.process_num = b.processclass_process_num
+	AND a.process_status='미수료'
+	AND b.processclass_member_num=#{member_num}
+	</select>
+</mapper>

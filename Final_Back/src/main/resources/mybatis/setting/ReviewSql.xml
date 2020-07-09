@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="review">
+	<!-- 회원 가입(회원 추가) -->
+	<insert id="insertOfReview" parameterType="reviewdto">
+		insert into review (review_member_num,review_member_name,
+		review_process,review_plans,review_ready,review_commu,review_subject,
+		review_content,review_writeday) values (#{review_member_num},#{review_member_name},#{review_process},
+		#{review_plans},#{review_ready},#{review_commu},
+		#{review_subject},#{review_content},now())
+	</insert>
+	<select id="selectAllOfReview" resultType="reviewdto">
+		select a.review_num,a.review_member_num,a.review_member_name,a.review_process,a.review_plans,a.review_ready,a.review_commu,a.review_subject,a.review_content,a.review_writeday, b.member_profile
+		from review a, member b
+		where a.review_member_num = b.member_num order by review_num desc
+	</select>
+	
+	<!-- 수정 -->
+	<update id="updateOfReview" parameterType="reviewdto">
+		update review set review_plans=#{review_plans},review_ready=#{review_ready},
+		review_commu=#{review_commu},review_subject=#{review_subject}, review_content=#{review_content} where review_num=#{review_num}
+	</update>
+	
+	<delete id="deleteOfReview" parameterType="int">
+			delete from review where review_num=#{review_num}
+	</delete>
+</mapper>

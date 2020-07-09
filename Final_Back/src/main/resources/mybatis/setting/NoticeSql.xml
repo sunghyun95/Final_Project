@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="notice">
+	<!-- 리스트 최대 10개 -->
+	<select id="selectOfNotice" resultType="noticedto">
+		select * from notice order by notice_type desc, notice_num desc
+	</select>
+	<!-- maxNum -->
+	<select id="maxNumOfNotice" resultType="int">
+		select max(notice_num) from notice
+	</select>
+	<!-- 추가 -->
+	<insert id="insertOfNotice" parameterType="noticedto">
+		insert into notice(notice_member_num, notice_subject, notice_content, notice_writeday) values (#{notice_member_num}, #{notice_subject}, #{notice_content}, now())
+	</insert>
+	<!-- 해당 게시글 선택  조회 -->
+	<select id="selectOneOfNotice" parameterType="int" resultType="noticedto">
+		select * from notice where notice_num=#{notice_num}
+	</select>
+	<!-- 수정 -->
+	<update id="updateOfNotice" parameterType="noticedto">
+		update notice set notice_subject=#{notice_subject}, notice_content=#{notice_content} where notice_num=#{notice_num}
+	</update>
+	<!-- 삭제 -->
+	<delete id="deleteOfNotice" parameterType="int">
+		delete from notice where notice_num=#{notice_num}
+	</delete>
+	<!-- 조회수 증가 -->
+	<update id="updateReadCount" parameterType="int">
+		update notice set notice_readcount=notice_readcount+1 where notice_num=#{notice_num}
+	</update>
+	<!-- 공지 맨위로 -->
+	<update id="updateOfNoticetype" parameterType="HashMap">
+		update notice set notice_type=#{notice_type} where notice_num=#{notice_num}
+	</update>
+	<!-- 공지사항 검색 -->
+	<select id="allOfNotice" parameterType="HashMap" resultType="noticedto">
+		select * from notice where 1=1 
+		<!-- <if test="type!=null and type!=''">
+			and notice_subject = #{notice_subject}
+		</if> -->
+		<if test="search!=null and search!=''">
+			and ${field} like concat('%',#{search},'%')
+		</if>
+		order by notice_type desc, notice_num desc
+		</select>
+</mapper>
